@@ -26,7 +26,3 @@ It also generates folder with wrongly classified pictures. If too many faces wer
 ## Notes:
 
 Developed and tested on Ubuntu 18 with CUDA 10.1.
-
-For usage:
-- browser Selenium plugin must be installed
-- path to Driver path must be updated
