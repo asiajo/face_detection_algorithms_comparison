@@ -6,6 +6,7 @@ from __future__ import division
 import os
 import time
 import cv2
+from dlib import mmod_rectangle
 
 rect_line_color = (0, 255, 0)
 rect_line_width = 2
@@ -49,6 +50,12 @@ def save_false_findings_dlib(face_rectangles, image, scale):
     """
     if len(face_rectangles) > 1:
         for face_r in face_rectangles:
+            if isinstance(face_r, mmod_rectangle):
+                if face_r.confidence < 0.5:
+                    continue
+                # cnn version of dlib returns dlib.mmod_rectangle
+                # hog version returns rectangle
+                face_r = face_r.rect
             cv2.rectangle(
                 image,
                 (int(face_r.left() * scale), int(face_r.top() * scale)),
