@@ -68,10 +68,22 @@ def run_detection(photos, name, func, model, save_false_finding):
         found_correct += min(found, 1)
         found_false += int(found > 1)
     time_taken = time.time() * 1000 - t
+    amount_of_photos = len(photos)
+    l = str(len(str(amount_of_photos)))
     logging.info(
-        ("%-26s found faces on %d, out of %d pictures in %d milliseconds. "
-         + "On %d pictures it made a mistake and found more than one face."
-         ) % (name, found_correct, len(photos), time_taken, found_false))
+        ("%-26s found faces on %" + l + "d, out of %d pictures in %5d " +
+         "milliseconds. On %" + l + "d pictures it made a mistake and found " +
+         "more than one face. Achieved accuracy of correct findings: %02d%% " +
+         "and mistake rate: %02d%%"
+         ) % (name,
+              found_correct,
+              amount_of_photos,
+              time_taken,
+              found_false,
+              int(found_correct/amount_of_photos * 100),
+              int(found_false/amount_of_photos * 100)
+              )
+    )
 
 
 def get_minimized_dimensions(w_orig, h_orig):
