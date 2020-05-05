@@ -9,6 +9,7 @@ import cv2
 from skimage import io
 import dlib
 import logging
+import numpy as np
 
 from face_detection_dlib import detect_face_dlib
 from face_detection_opencv_dnn import detect_face_open_cv_dnn
@@ -73,6 +74,24 @@ def run_detection(photos, name, func, model, save_false_finding):
          ) % (name, found_correct, len(photos), time_taken, found_false))
 
 
+def get_minimized_dimensions(w_orig, h_orig):
+    """
+    Receives dimensions of the existing photo and returns new dimensions, where
+    the shorter edge has length [size_short_side] and the longer is calculated
+    proportionally to constrain proportions.
+
+    :param w_orig: width of the original image
+    :param h_orig: height of the original image
+    :return: proportional dimensions, where the smaller one is
+           [size_short_side]
+    """
+    size_short_side = 224
+    if w_orig/h_orig < 1:
+        return size_short_side, int(size_short_side * h_orig/w_orig)
+    else:
+        return int(size_short_side * w_orig/h_orig), size_short_side
+
+
 def main():
     """
     main
@@ -82,7 +101,9 @@ def main():
     ic = io.ImageCollection('./samples/*.jpg')
     photos = []
     for image in ic:
-        photos.append(image)
+        w, h = get_minimized_dimensions(image.shape[1], image.shape[0])
+        image_small = np.array(cv2.resize(image, (w, h)))
+        photos.append(image_small)
     logging.info("Total amount of photos: %d", len(ic))
 
     run_detection(
