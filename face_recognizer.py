@@ -154,6 +154,12 @@ def main():
         detect_face_face_recognition,
         "hog",
         save_false_findings)
+    run_detection(
+        photos,
+        "face recognition using cnn",
+        detect_face_face_recognition,
+        "cnn",
+        save_false_findings)
 
 
 if __name__ == "__main__":

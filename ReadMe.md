@@ -19,6 +19,7 @@ time [INFO] OpenCV Dnn Tf              found faces on 12, out of 13 pictures in 
 time [INFO] Dlib Hog                   found faces on  9, out of 13 pictures in   205 milliseconds. On  0 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 69% and mistake rate: 00%
 time [INFO] Dlib cnn                   found faces on 11, out of 13 pictures in   810 milliseconds. On  0 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 84% and mistake rate: 00%
 time [INFO] face recognition using hog found faces on 10, out of 13 pictures in   476 milliseconds. On  1 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 76% and mistake rate: 07%
+time [INFO] face recognition using cnn found faces on 13, out of 13 pictures in   288 milliseconds. On  0 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 100% and mistake rate: 00%
 </pre></code><br>
 
 On sample, randomly scrapped from internet photos containing exactly one person on the picture
@@ -31,6 +32,7 @@ time [INFO] OpenCV Dnn Tf              found faces on 1087, out of 1127 pictures
 time [INFO] Dlib Hog                   found faces on  880, out of 1127 pictures in 19837 milliseconds. On    6 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 78% and mistake rate: 00%
 time [INFO] Dlib cnn                   found faces on  876, out of 1127 pictures in 12952 milliseconds. On    5 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 77% and mistake rate: 00%
 time [INFO] face recognition using hog found faces on 1012, out of 1127 pictures in 54771 milliseconds. On    9 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 89% and mistake rate: 00%
+time [INFO] face recognition using cnn found faces on 1053, out of 1127 pictures in 35579 milliseconds. On   11 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 93% and mistake rate: 00%
 </pre></code>
  
 It also generates folder with wrongly classified pictures. If too many faces were detected on the photo - it draws rectangles around found faces.
