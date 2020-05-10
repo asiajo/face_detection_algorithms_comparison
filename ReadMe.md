@@ -27,18 +27,16 @@ time [INFO] face recognition using cnn found faces on 13, out of 13 pictures in 
 On sample, randomly scrapped from internet photos containing exactly one person on the picture
 the following output was produced:
 
-<code><pre>time [INFO] Total amount of photos: 1111
-time [INFO] OpenCV Haar                found faces on 1010, out of 1111 pictures in 24524 milliseconds. On  175 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 90% and mistake rate: 15%
-time [INFO] OpenCV Dnn Caffe           found faces on 1075, out of 1111 pictures in 28810 milliseconds. On   84 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 96% and mistake rate: 07%
-time [INFO] OpenCV Dnn Tf              found faces on 1073, out of 1111 pictures in 27900 milliseconds. On   84 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 96% and mistake rate: 07%
-time [INFO] Dlib Hog                   found faces on  874, out of 1111 pictures in 19319 milliseconds. On    4 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 78% and mistake rate: 00%
-time [INFO] Dlib hog + landmarks       found faces on  874, out of 1111 pictures in 19313 milliseconds. On    4 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 78% and mistake rate: 00%
-time [INFO] Dlib cnn                   found faces on  867, out of 1111 pictures in 12636 milliseconds. On    3 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 78% and mistake rate: 00%
-time [INFO] Dlib cnn + landmarks       found faces on  867, out of 1111 pictures in 11923 milliseconds. On    3 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 78% and mistake rate: 00%
-time [INFO] face recognition using hog found faces on  979, out of 1111 pictures in 41325 milliseconds. On    5 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 88% and mistake rate: 00%
-time [INFO] face recognition using cnn found faces on 1021, out of 1111 pictures in 24422 milliseconds. On    3 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 91% and mistake rate: 00%
-
-Process finished with exit code 0
+<code><pre>time [INFO] Total amount of photos: 1093
+time INFO] OpenCV Haar                found faces on  996, out of 1093 pictures in 22816 milliseconds. On  171 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 91% and mistake rate: 15%
+time [INFO] OpenCV Dnn Caffe           found faces on 1061, out of 1093 pictures in 28911 milliseconds. On   83 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 97% and mistake rate: 07%
+time [INFO] OpenCV Dnn Tf              found faces on 1059, out of 1093 pictures in 27478 milliseconds. On   83 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 96% and mistake rate: 07%
+time [INFO] Dlib Hog                   found faces on  866, out of 1093 pictures in 18979 milliseconds. On    3 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 79% and mistake rate: 00%
+time [INFO] Dlib hog + landmarks       found faces on  866, out of 1093 pictures in 19085 milliseconds. On    3 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 79% and mistake rate: 00%
+time [INFO] Dlib cnn                   found faces on  860, out of 1093 pictures in 12023 milliseconds. On    1 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 78% and mistake rate: 00%
+time [INFO] Dlib cnn + landmarks       found faces on  860, out of 1093 pictures in 11626 milliseconds. On    1 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 78% and mistake rate: 00%
+time [INFO] face recognition using hog found faces on  969, out of 1093 pictures in 40513 milliseconds. On    3 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 88% and mistake rate: 00%
+time [INFO] face recognition using cnn found faces on 1012, out of 1093 pictures in 23855 milliseconds. On    1 pictures it made a mistake and found more than one face. Achieved accuracy of correct findings: 92% and mistake rate: 00%
 </pre></code>
  
 It also generates folder with wrongly classified pictures. If too many faces were detected on the photo - it draws rectangles around found faces.
