@@ -15,6 +15,8 @@ from face_detection_dlib import detect_face_dlib
 from face_detection_opencv_dnn import detect_face_open_cv_dnn
 from face_detection_opencv_haar import detect_face_open_cv_cascade
 from face_detection_face_recognition import detect_face_face_recognition
+from face_detection_and_landmarks_dlib import detect_face_and_landmarks_dlib
+from face_detection_deep_face import detect_face_deep_face
 
 logging.basicConfig(
     level=logging.INFO,
@@ -64,7 +66,8 @@ def run_detection(photos, name, func, model, save_false_finding):
     found_false = 0
     t = time.time() * 1000
     for image in photos:
-        found = func(model, image, save_false_finding)
+        found = func(model, image, save_false_finding,
+                     location="_".join(name.strip().split()))
         found_correct += min(found, 1)
         found_false += int(found > 1)
     time_taken = time.time() * 1000 - t
@@ -80,8 +83,8 @@ def run_detection(photos, name, func, model, save_false_finding):
               amount_of_photos,
               time_taken,
               found_false,
-              int(found_correct/amount_of_photos * 100),
-              int(found_false/amount_of_photos * 100)
+              int(found_correct / amount_of_photos * 100),
+              int(found_false / amount_of_photos * 100)
               )
     )
 
@@ -97,11 +100,11 @@ def get_minimized_dimensions(w_orig, h_orig):
     :return: proportional dimensions, where the smaller one is
            [size_short_side]
     """
-    size_short_side = 224
-    if w_orig/h_orig < 1:
-        return size_short_side, int(size_short_side * h_orig/w_orig)
+    size_short_side = 200
+    if w_orig / h_orig < 1:
+        return size_short_side, int(size_short_side * h_orig / w_orig)
     else:
-        return int(size_short_side * w_orig/h_orig), size_short_side
+        return int(size_short_side * w_orig / h_orig), size_short_side
 
 
 def main():
@@ -144,8 +147,20 @@ def main():
         save_false_findings)
     run_detection(
         photos,
+        "Dlib hog + landmarks",
+        detect_face_and_landmarks_dlib,
+        hogFaceDetector,
+        save_false_findings)
+    run_detection(
+        photos,
         "Dlib cnn",
         detect_face_dlib,
+        dnnFaceDetector,
+        save_false_findings)
+    run_detection(
+        photos,
+        "Dlib cnn + landmarks",
+        detect_face_and_landmarks_dlib,
         dnnFaceDetector,
         save_false_findings)
     run_detection(

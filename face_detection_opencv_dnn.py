@@ -12,7 +12,8 @@ rect_line_color = (0, 255, 0)
 rect_line_width = 2
 
 
-def detect_face_open_cv_dnn(net, image, save_false_finding=True):
+def detect_face_open_cv_dnn(net, image, save_false_finding=True,
+        location="cv_dnn"):
     """
     Detects faces on the received image using received dnn.
 
@@ -20,6 +21,7 @@ def detect_face_open_cv_dnn(net, image, save_false_finding=True):
     :param image: image on which the face should be detected
     :param save_false_finding: flag if incorrectly classified images should be
             saved to the disc
+    :param location: folder name where false findings shall be saved
     :return: 1 if at least one face was found, 0 otherwise
     """
     image_copy = image.copy()
@@ -33,11 +35,11 @@ def detect_face_open_cv_dnn(net, image, save_false_finding=True):
         if confidence > conf_threshold:
             count += 1
     if save_false_finding:
-        save_false_findings_cv_dnn(count, detections, image_copy)
+        save_false_findings_cv_dnn(count, detections, image_copy, location)
     return count
 
 
-def save_false_findings_cv_dnn(count, detections, image):
+def save_false_findings_cv_dnn(count, detections, image, location):
     """
     Saves images that contain exactly one face, but the algorithm either did
     not find any face on them, or found more than one. In latter case
@@ -46,6 +48,7 @@ def save_false_findings_cv_dnn(count, detections, image):
     :param count: count of faces found by algorithm
     :param detections: detections of faces faces found by algorithm
     :param image: image under evaluation
+    :param location: folder name where false findings shall be saved
     """
     if count > 1:
         frame_height = image.shape[0]
@@ -59,14 +62,15 @@ def save_false_findings_cv_dnn(count, detections, image):
                 y2 = int(detections[0, 0, i, 6] * frame_height)
                 cv2.rectangle(image, (x1, y1), (x2, y2), rect_line_color,
                               rect_line_width)
-        path_too_many = "./false_findings/cv_dnn/too_many/"
+        path_too_many = os.path.join(
+            "./false_findings", location, "too_many/")
         if not os.path.exists(path_too_many):
             os.makedirs(path_too_many)
         cv2.imwrite(
             path_too_many + str(time.time()) + ".jpg",
             cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     if not count:
-        path_none = "./false_findings/cv_dnn/none/"
+        path_none = os.path.join("./false_findings", location, "none/")
         if not os.path.exists(path_none):
             os.makedirs(path_none)
         cv2.imwrite(

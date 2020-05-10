@@ -12,7 +12,8 @@ rect_line_width = 2
 
 
 def detect_face_open_cv_cascade(
-        classifier, image, save_false_finding=True, in_height=300):
+        classifier, image, save_false_finding=True, in_height=300,
+        location="cv_haar"):
     """
     Detects faces on the received image using received classifier.
 
@@ -21,6 +22,7 @@ def detect_face_open_cv_cascade(
     :param save_false_finding: flag if incorrectly classified images should be
             saved to the disc
     :param in_height: height of image inserted into the classifier
+    :param location: folder name where false findings shall be saved
     :return: 1 if at least one face was found, 0 otherwise
     """
     image_copy = image.copy()
@@ -35,11 +37,11 @@ def detect_face_open_cv_cascade(
 
     faces = classifier.detectMultiScale(image_gray)
     if save_false_finding:
-        save_false_findings_cv_haar(faces, image_copy, scale)
+        save_false_findings_cv_haar(faces, image_copy, scale, location)
     return len(faces)
 
 
-def save_false_findings_cv_haar(face_rectangles, image, scale):
+def save_false_findings_cv_haar(face_rectangles, image, scale, location):
     """
     Saves images that contain exactly one face, but the algorithm either did
     not find any face on them, or found more than one. In latter case
@@ -49,6 +51,7 @@ def save_false_findings_cv_haar(face_rectangles, image, scale):
     :param image: image under evaluation
     :param scale: scale factor by which the image size was decreased before
             feeding to search algorithm
+    :param location: folder name where false findings shall be saved
     """
     if len(face_rectangles) > 1:
         for (x, y, w, h) in face_rectangles:
@@ -58,13 +61,14 @@ def save_false_findings_cv_haar(face_rectangles, image, scale):
                 (int((x + w) * scale), int((y + h) * scale)),
                 rect_line_color,
                 rect_line_width)
-        path_too_many = "./false_findings/cv_haar/too_many/"
+        path_too_many = os.path.join(
+            "./false_findings", location, "too_many/")
         if not os.path.exists(path_too_many):
             os.makedirs(path_too_many)
         cv2.imwrite(path_too_many + str(time.time()) + ".jpg",
                     cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     if not len(face_rectangles):
-        path_none = "./false_findings/cv_haar/none/"
+        path_none = os.path.join("./false_findings", location, "none/")
         if not os.path.exists(path_none):
             os.makedirs(path_none)
         cv2.imwrite(path_none + str(time.time()) + ".jpg",

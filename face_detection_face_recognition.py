@@ -10,7 +10,8 @@ rect_line_color = (0, 255, 0)
 rect_line_width = 2
 
 
-def detect_face_face_recognition(model, image, save_false_finding=True):
+def detect_face_face_recognition(model, image, save_false_finding=True,
+        location="face_recognition"):
     """
     Detects faces on the received image using face_recognition library.
 
@@ -18,15 +19,16 @@ def detect_face_face_recognition(model, image, save_false_finding=True):
     :param image: image on which the face should be detected
     :param save_false_finding: flag if incorrectly classified images should be
             saved to the disc
+    :param location: folder name where false findings shall be saved
     """
     image_copy = image.copy()
     face_locations = face_recognition.face_locations(image_copy, model=model)
     if save_false_finding:
-        save_false_findings_face_recognition(face_locations, image_copy)
+        save_false_findings_face_recognition(face_locations, image_copy, location)
     return len(face_locations)
 
 
-def save_false_findings_face_recognition(face_locations, image):
+def save_false_findings_face_recognition(face_locations, image, location):
     """
     Saves images that contain exactly one face, but the algorithm either did
     not find any face on them, or found more than one. In latter case
@@ -34,12 +36,12 @@ def save_false_findings_face_recognition(face_locations, image):
 
     :param face_locations: detections of faces faces found by algorithm
     :param image: image under evaluation
-    :return:
+    :param location: folder name where false findings shall be saved
     """
     if len(face_locations) == 1:
         return
     if not len(face_locations):
-        path_none = "./false_findings/face_recognition/none/"
+        path_none = os.path.join("./false_findings", location, "none/")
         if not os.path.exists(path_none):
             os.makedirs(path_none)
         cv2.imwrite(
@@ -53,7 +55,8 @@ def save_false_findings_face_recognition(face_locations, image):
                 (face[2], face[3]),
                 rect_line_color,
                 rect_line_width)
-        path_too_many = "./false_findings/face_recognition/too_many/"
+        path_too_many = os.path.join(
+            "./false_findings", location, "too_many/")
         if not os.path.exists(path_too_many):
             os.makedirs(path_too_many)
         cv2.imwrite(
