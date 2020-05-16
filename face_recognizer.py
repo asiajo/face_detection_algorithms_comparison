@@ -16,11 +16,10 @@ from face_detection_opencv_dnn import detect_face_open_cv_dnn
 from face_detection_opencv_haar import detect_face_open_cv_cascade
 from face_detection_face_recognition import detect_face_face_recognition
 from face_detection_and_landmarks_dlib import detect_face_and_landmarks_dlib
-from face_detection_deep_face import detect_face_deep_face
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
+    format="%(message)s",
     handlers=[
         logging.FileHandler("debug.log"),
         logging.StreamHandler()
@@ -74,13 +73,10 @@ def run_detection(photos, name, func, model, save_false_finding):
     amount_of_photos = len(photos)
     l = str(len(str(amount_of_photos)))
     logging.info(
-        ("%-26s found faces on %" + l + "d, out of %d pictures in %5d " +
-         "milliseconds. On %" + l + "d pictures it made a mistake and found " +
-         "more than one face. Achieved accuracy of correct findings: %02d%% " +
-         "and mistake rate: %02d%%"
+        ("| %-26s | %15d | %15d | %12d ms | %26d | %13d %% | %13d %% |"
          ) % (name,
-              found_correct,
               amount_of_photos,
+              found_correct,
               time_taken,
               found_false,
               int(found_correct / amount_of_photos * 100),
@@ -113,13 +109,21 @@ def main():
     """
     save_false_findings = True
 
-    ic = io.ImageCollection('./samples/*.jpg')
+    ic = io.ImageCollection('./one_person/*.jpg')
     photos = []
     for image in ic:
         w, h = get_minimized_dimensions(image.shape[1], image.shape[0])
         image_small = np.array(cv2.resize(image, (w, h)))
         photos.append(image_small)
-    logging.info("Total amount of photos: %d", len(ic))
+    logging.info(
+        "Total amount of photos with exactly one face on the image: %d",
+        len(ic))
+    column_big = "| %-26s "
+    column_narrow = "| %-15s "
+    logging.info(
+        column_big + column_narrow * 3 + column_big + column_narrow * 2 + "|",
+        "Network:", "total imgs:", "found face on:", "in time:",
+        "more than one face on:", "accuracy:", "mistake rate:")
 
     run_detection(
         photos,
