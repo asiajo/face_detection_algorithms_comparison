@@ -27,17 +27,17 @@ On those sample pictures following output was generated (with GPU support):
 On sample, randomly scrapped from internet photos containing exactly one person on the picture
 the following output was produced:
 
-<code><pre>Total amount of photos with exactly one face on the image: 1093
+<code><pre>Total amount of photos with exactly one face on the image: 1073
 | Network:                   | total imgs:     | found face on:  | in time:        | more than one face on:     | accuracy:       | mistake rate:   |
-| OpenCV Haar                |            1093 |             996 |        22703 ms |                        171 |            91 % |            15 % |
-| OpenCV Dnn Caffe           |            1093 |            1060 |        27668 ms |                          2 |            96 % |             0 % |
-| OpenCV Dnn Tf              |            1093 |            1059 |        27436 ms |                         83 |            96 % |             7 % |
-| Dlib Hog                   |            1093 |             866 |        18998 ms |                          3 |            79 % |             0 % |
-| Dlib hog + landmarks       |            1093 |             866 |        19015 ms |                          3 |            79 % |             0 % |
-| Dlib cnn                   |            1093 |             860 |        12164 ms |                          1 |            78 % |             0 % |
-| Dlib cnn + landmarks       |            1093 |             860 |        11696 ms |                          1 |            78 % |             0 % |
-| face recognition using hog |            1093 |             969 |        40665 ms |                          3 |            88 % |             0 % |
-| face recognition using cnn |            1093 |            1012 |        24010 ms |                          1 |            92 % |             0 % |</pre></code>
+| OpenCV Haar                |            1073 |             979 |        22394 ms |                        167 |            91 % |            15 % |
+| OpenCV Dnn Caffe           |            1073 |            1041 |        27092 ms |                          2 |            97 % |             0 % |
+| OpenCV Dnn Tf              |            1073 |            1039 |        26437 ms |                          2 |            96 % |             0 % |
+| Dlib Hog                   |            1073 |             849 |        18611 ms |                          3 |            79 % |             0 % |
+| Dlib hog + landmarks       |            1073 |             849 |        18643 ms |                          3 |            79 % |             0 % |
+| Dlib cnn                   |            1073 |             846 |        11848 ms |                          0 |            78 % |             0 % |
+| Dlib cnn + landmarks       |            1073 |             846 |        11409 ms |                          0 |            78 % |             0 % |
+| face recognition using hog |            1073 |             951 |        39836 ms |                          3 |            88 % |             0 % |
+| face recognition using cnn |            1073 |             994 |        23506 ms |                          0 |            92 % |             0 % |</pre></code>
  
 It also generates folder with wrongly classified pictures. If too many faces were detected on the photo - it draws rectangles around found faces.
 
