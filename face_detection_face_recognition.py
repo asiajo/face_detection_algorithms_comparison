@@ -11,7 +11,7 @@ rect_line_width = 2
 
 
 def detect_face_face_recognition(model, image, save_false_finding=True,
-        location="face_recognition"):
+                                 location="face_recognition"):
     """
     Detects faces on the received image using face_recognition library.
 
@@ -24,7 +24,8 @@ def detect_face_face_recognition(model, image, save_false_finding=True,
     image_copy = image.copy()
     face_locations = face_recognition.face_locations(image_copy, model=model)
     if save_false_finding:
-        save_false_findings_face_recognition(face_locations, image_copy, location)
+        save_false_findings_face_recognition(
+            face_locations, image_copy, location)
     return len(face_locations)
 
 

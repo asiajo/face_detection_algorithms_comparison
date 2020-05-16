@@ -11,11 +11,11 @@ import dlib
 import logging
 import numpy as np
 
-from face_detection_dlib import detect_face_dlib
 from face_detection_opencv_dnn import detect_face_open_cv_dnn
-from face_detection_opencv_haar import detect_face_open_cv_cascade
 from face_detection_face_recognition import detect_face_face_recognition
 from face_detection_and_landmarks_dlib import detect_face_and_landmarks_dlib
+from face_detection_and_landmarks_opencv_haar import \
+    detect_face_open_cv_cascade_with_landmarks
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,6 +46,8 @@ hogFaceDetector = dlib.get_frontal_face_detector()
 dnnFaceDetector = dlib.cnn_face_detection_model_v1(
     "./models/mmod_human_face_detector.dat")
 
+image_shorter_side = 300
+
 
 def run_detection(photos, name, func, model, save_false_finding):
     """
@@ -71,9 +73,8 @@ def run_detection(photos, name, func, model, save_false_finding):
         found_false += int(found > 1)
     time_taken = time.time() * 1000 - t
     amount_of_photos = len(photos)
-    l = str(len(str(amount_of_photos)))
     logging.info(
-        ("| %-26s | %15d | %15d | %12d ms | %26d | %13d %% | %13d %% |"
+        ("| %-32s | %15d | %15d | %12d ms | %22d | %13d %% | %13d %% |"
          ) % (name,
               amount_of_photos,
               found_correct,
@@ -96,11 +97,10 @@ def get_minimized_dimensions(w_orig, h_orig):
     :return: proportional dimensions, where the smaller one is
            [size_short_side]
     """
-    size_short_side = 200
     if w_orig / h_orig < 1:
-        return size_short_side, int(size_short_side * h_orig / w_orig)
+        return image_shorter_side, int(image_shorter_side * h_orig / w_orig)
     else:
-        return int(size_short_side * w_orig / h_orig), size_short_side
+        return int(image_shorter_side * w_orig / h_orig), image_shorter_side
 
 
 def main():
@@ -116,38 +116,33 @@ def main():
         image_small = np.array(cv2.resize(image, (w, h)))
         photos.append(image_small)
     logging.info(
-        "Total amount of photos with exactly one face on the image: %d",
-        len(ic))
-    column_big = "| %-26s "
+        "Total amount of photos with exactly one face on the image: %d. " +
+        "Smaller edge length of the image fed to the network: %d px.",
+        len(ic), image_shorter_side)
+    column_big = "| %-32s "
     column_narrow = "| %-15s "
     logging.info(
-        column_big + column_narrow * 3 + column_big + column_narrow * 2 + "|",
-        "Network:", "total imgs:", "found face on:", "in time:",
+        column_big + column_narrow * 3 + "| %-22s " + column_narrow * 2 + "|",
+        "Network:", "total images:", "found face on:", "in time:",
         "more than one face on:", "accuracy:", "mistake rate:")
 
     run_detection(
         photos,
-        "OpenCV Haar",
-        detect_face_open_cv_cascade,
+        "OpenCV Haar + landmarks",
+        detect_face_open_cv_cascade_with_landmarks,
         face_cascade,
         save_false_findings)
     run_detection(
         photos,
-        "OpenCV Dnn Caffe",
+        "OpenCV Dnn Caffe just rectangles",
         detect_face_open_cv_dnn,
         net_caffe,
         save_false_findings)
     run_detection(
         photos,
-        "OpenCV Dnn Tf",
+        "OpenCV Dnn Tf    just rectangles",
         detect_face_open_cv_dnn,
         net_tf,
-        save_false_findings)
-    run_detection(
-        photos,
-        "Dlib Hog",
-        detect_face_dlib,
-        hogFaceDetector,
         save_false_findings)
     run_detection(
         photos,
@@ -157,25 +152,19 @@ def main():
         save_false_findings)
     run_detection(
         photos,
-        "Dlib cnn",
-        detect_face_dlib,
-        dnnFaceDetector,
-        save_false_findings)
-    run_detection(
-        photos,
         "Dlib cnn + landmarks",
         detect_face_and_landmarks_dlib,
         dnnFaceDetector,
         save_false_findings)
     run_detection(
         photos,
-        "face recognition using hog",
+        "face_recognition using hog",
         detect_face_face_recognition,
         "hog",
         save_false_findings)
     run_detection(
         photos,
-        "face recognition using cnn",
+        "face_recognition using cnn",
         detect_face_face_recognition,
         "cnn",
         save_false_findings)
