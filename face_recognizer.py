@@ -13,8 +13,8 @@ import numpy as np
 
 from face_detection_opencv_dnn import detect_face_open_cv_dnn
 from face_detection_face_recognition import detect_face_face_recognition
-from face_detection_and_landmarks_dlib import detect_face_and_landmarks_dlib
-from face_detection_and_landmarks_opencv_haar import \
+from face_detection_dlib import detect_face_and_landmarks_dlib
+from face_detection_opencv_haar import \
     detect_face_open_cv_cascade_with_landmarks
 
 logging.basicConfig(
@@ -46,7 +46,7 @@ hogFaceDetector = dlib.get_frontal_face_detector()
 dnnFaceDetector = dlib.cnn_face_detection_model_v1(
     "./models/mmod_human_face_detector.dat")
 
-image_shorter_side = 300
+image_shorter_side = 200
 
 
 def run_detection(photos, name, func, model, save_false_finding):
@@ -74,7 +74,7 @@ def run_detection(photos, name, func, model, save_false_finding):
     time_taken = time.time() * 1000 - t
     amount_of_photos = len(photos)
     logging.info(
-        ("| %-32s | %15d | %15d | %12d ms | %22d | %13d %% | %13d %% |"
+        ("| %-26s | %15d | %15d | %12d ms | %22d | %13d %% | %13d %% |"
          ) % (name,
               amount_of_photos,
               found_correct,
@@ -109,7 +109,7 @@ def main():
     """
     save_false_findings = True
 
-    ic = io.ImageCollection('./one_person/*.jpg')
+    ic = io.ImageCollection('./samples/*.jpg')
     photos = []
     for image in ic:
         w, h = get_minimized_dimensions(image.shape[1], image.shape[0])
@@ -119,7 +119,7 @@ def main():
         "Total amount of photos with exactly one face on the image: %d. " +
         "Smaller edge length of the image fed to the network: %d px.",
         len(ic), image_shorter_side)
-    column_big = "| %-32s "
+    column_big = "| %-26s "
     column_narrow = "| %-15s "
     logging.info(
         column_big + column_narrow * 3 + "| %-22s " + column_narrow * 2 + "|",
@@ -128,31 +128,31 @@ def main():
 
     run_detection(
         photos,
-        "OpenCV Haar + landmarks",
+        "OpenCV Haar",
         detect_face_open_cv_cascade_with_landmarks,
         face_cascade,
         save_false_findings)
     run_detection(
         photos,
-        "OpenCV Dnn Caffe just rectangles",
+        "OpenCV Dnn Caffe",
         detect_face_open_cv_dnn,
         net_caffe,
         save_false_findings)
     run_detection(
         photos,
-        "OpenCV Dnn Tf    just rectangles",
+        "OpenCV Dnn Tf",
         detect_face_open_cv_dnn,
         net_tf,
         save_false_findings)
     run_detection(
         photos,
-        "Dlib hog + landmarks",
+        "Dlib hog",
         detect_face_and_landmarks_dlib,
         hogFaceDetector,
         save_false_findings)
     run_detection(
         photos,
-        "Dlib cnn + landmarks",
+        "Dlib cnn",
         detect_face_and_landmarks_dlib,
         dnnFaceDetector,
         save_false_findings)

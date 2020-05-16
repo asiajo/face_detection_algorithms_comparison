@@ -49,13 +49,13 @@ def save_false_findings_face_recognition(face_locations, image, location):
             path_none + str(time.time()) + ".jpg",
             cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     if len(face_locations) > 1:
-        for face in face_locations:
-            cv2.rectangle(
-                image,
-                (face[0], face[1]),
-                (face[2], face[3]),
-                rect_line_color,
-                rect_line_width)
+        face_landmarks_list = face_recognition.face_landmarks(image)
+
+        for landmark in face_landmarks_list:
+            for face_element in landmark:
+                for point in landmark[face_element]:
+                    cv2.circle(
+                        image, point, 1, rect_line_color, rect_line_width)
         path_too_many = os.path.join(
             "./false_findings", location, "too_many/")
         if not os.path.exists(path_too_many):

@@ -62,8 +62,8 @@ def save_false_findings_dlib(face_rectangles, image, location):
             for i in range(68):
                 vec.append((shape.part(i).x,
                             shape.part(i).y))
-            for p1, p2 in zip(vec, vec[1:]):
-                cv2.line(image, p1, p2, rect_line_color, rect_line_width)
+            for point in vec:
+                cv2.circle(image, point, 2, rect_line_color, rect_line_width)
         path_too_many = os.path.join(
             "./false_findings", location, "too_many/")
         if not os.path.exists(path_too_many):
