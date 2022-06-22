@@ -61,7 +61,7 @@ matplotlib==3.2.1
 meld==3.18.0
 netifaces==0.10.4
 networkx==2.4
-numpy==1.18.2
+numpy==1.22.0
 oauth==1.0.1
 oauthlib==3.1.0
 olefile==0.45.1
